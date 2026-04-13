@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "convex": {
+      "type": "http",
+      "url": "${CONVEX_PEER_URL:-https://mikera1337-convex-testnet.hf.space/mcp}",
+      "headers": {
+        "Authorization": "Bearer ${CONVEX_AUTH_TOKEN:-}"
+      }
+    }
+  }
+}
