@@ -1,0 +1,81 @@
+name: Validate plugin
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate JSON files parse
+        run: |
+          set -euo pipefail
+          for f in .claude-plugin/plugin.json .mcp.json; do
+            echo "Checking $f"
+            python3 -c "import json, sys; json.load(open('$f'))"
+          done
+
+      - name: Validate plugin.json required fields
+        run: |
+          python3 <<'PY'
+          import json, sys
+          with open('.claude-plugin/plugin.json') as f:
+              m = json.load(f)
+          missing = [k for k in ('name', 'description', 'version') if k not in m]
+          if missing:
+              print(f"Missing required fields: {missing}", file=sys.stderr)
+              sys.exit(1)
+          print("plugin.json OK:", m['name'], m['version'])
+          PY
+
+      - name: Validate .mcp.json structure
+        run: |
+          python3 <<'PY'
+          import json, sys
+          with open('.mcp.json') as f:
+              m = json.load(f)
+          servers = m.get('mcpServers')
+          if not isinstance(servers, dict) or not servers:
+              print("mcpServers must be a non-empty object", file=sys.stderr)
+              sys.exit(1)
+          for name, cfg in servers.items():
+              if cfg.get('type') not in ('http', 'streamable-http', 'sse', 'stdio'):
+                  print(f"{name}: unknown or missing type", file=sys.stderr)
+                  sys.exit(1)
+              if cfg['type'] in ('http', 'streamable-http', 'sse') and 'url' not in cfg:
+                  print(f"{name}: missing url", file=sys.stderr)
+                  sys.exit(1)
+          print("mcp.json OK:", ", ".join(servers))
+          PY
+
+      - name: Validate agent and command frontmatter
+        run: |
+          python3 <<'PY'
+          import os, sys, re
+          errs = []
+          for root in ('agents', 'commands'):
+              if not os.path.isdir(root):
+                  continue
+              for fn in os.listdir(root):
+                  if not fn.endswith('.md'):
+                      continue
+                  path = os.path.join(root, fn)
+                  with open(path) as f:
+                      text = f.read()
+                  m = re.match(r'^---\n(.*?)\n---\n', text, re.DOTALL)
+                  if not m:
+                      errs.append(f"{path}: missing frontmatter block")
+                      continue
+                  fm = m.group(1)
+                  if 'name:' not in fm or 'description:' not in fm:
+                      errs.append(f"{path}: frontmatter must include name and description")
+          if errs:
+              print("\n".join(errs), file=sys.stderr)
+              sys.exit(1)
+          print("frontmatter OK")
+          PY

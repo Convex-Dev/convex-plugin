@@ -1,10 +1,17 @@
 {
   "mcpServers": {
-    "convex": {
+    "convex-testnet": {
       "type": "http",
       "url": "${CONVEX_PEER_URL:-https://mikera1337-convex-testnet.hf.space/mcp}",
       "headers": {
         "Authorization": "Bearer ${CONVEX_AUTH_TOKEN:-}"
+      }
+    },
+    "convex-local": {
+      "type": "http",
+      "url": "${CONVEX_LOCAL_URL:-http://localhost:8080/mcp}",
+      "headers": {
+        "Authorization": "Bearer ${CONVEX_LOCAL_AUTH_TOKEN:-}"
       }
     }
   }

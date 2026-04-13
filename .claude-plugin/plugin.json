@@ -1,13 +1,13 @@
 {
   "name": "convex",
-  "description": "Convex peer integration for Claude Code. Exposes ~34 MCP tools covering queries, transactions, cryptography, account management, signing service and live state watches, plus guided prompts for common workflows.",
+  "description": "Convex peer integration for Claude Code. Binds the peer's MCP endpoint so Claude can query the lattice, run transactions, manage accounts and keys, resolve CNS names, and watch on-chain state, plus use guided prompts for common workflows.",
   "version": "0.1.0",
   "author": {
-    "name": "Convex Foundation",
+    "name": "Convex Foundation and contributors",
     "url": "https://convex.world"
   },
   "homepage": "https://convex.world",
   "repository": "https://github.com/Convex-Dev/convex-plugin",
   "license": "Apache-2.0",
-  "keywords": ["convex", "blockchain", "lattice", "mcp", "cvm"]
+  "keywords": ["convex", "lattice", "mcp", "cvm", "decentralised"]
 }
