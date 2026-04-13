@@ -10,6 +10,8 @@ All notable changes to this plugin will be documented here. Versions follow [sem
 - `convex` subagent preloaded with Convex platform context, terminology, and tool-selection guidance.
 - `/convex:faucet <address> [amount]` slash command for quick testnet funding.
 - `/convex:explore <address-or-cns-name>` slash command for account inspection.
+- `/convex:sign` slash command for client-side-signed transactions with visible intermediate steps (prepare → local convex-cli sign → submit).
+- `/convex:transact` slash command that runs the same client-side signing flow end to end, reporting only the final result.
 - Plugin-level `CLAUDE.md` injecting Convex terminology and conventions (juice not gas, copper, peer not miner, lattice not blockchain) so generated code stays consistent.
 - GitHub Actions workflow validating `plugin.json`, `.mcp.json`, and agent/command frontmatter on every push.
 - Troubleshooting section in README covering peer reachability, `MCP_TIMEOUT` tuning, auth errors, and elevated-operation browser confirmations.

@@ -21,6 +21,7 @@ claude --plugin-dir ./convex-plugin
 - **MCP tools** served by the peer — the full current set, including queries, transactions, cryptography, encoding, account management, signing-service operations, and state watches.
 - **MCP prompts** — guided workflows such as account exploration, network status, creating accounts, deploying contracts, and transferring funds.
 - **CLAUDE.md context** — Convex terminology (juice not gas, copper, peer not miner, lattice not blockchain), British English spelling, and tool-selection hints so Claude picks the right MCP tool the first time.
+- **Slash commands** — `/convex:explore`, `/convex:faucet`, `/convex:sign`, `/convex:transact` wrap common flows. The sign/transact pair delegates Ed25519 signing to your local `convex-cli` keystore so private keys never leave your machine.
 
 ## Configuration
 
