@@ -48,6 +48,24 @@ claude
 
 Disable a server you don't need via Claude Code's `/mcp` panel.
 
+## Running a local peer
+
+The `convex-local` binding connects to `http://localhost:8080/mcp` — the default REST API port of a Convex peer. To run one locally:
+
+```bash
+# Download or build convex.jar (see https://github.com/Convex-Dev/convex)
+java -jar convex.jar local start
+```
+
+That starts a single-peer local lattice with the peer binary protocol on `18888` and the REST/MCP endpoint on `8080`. Open Claude Code and the `convex-local` tools will be live.
+
+Notes for local development:
+
+- **No HTTPS.** The plugin does not block seed-based tools over `http://localhost`, but you should treat local keys as disposable. Do not point `CONVEX_LOCAL_URL` at a plain-HTTP non-localhost peer.
+- **Faucet.** `convex local start` configures a faucet by default; `/convex:faucet` works against `convex-local` once you override it to target the local server.
+- **Signing service.** Not enabled by default on local peers — the 13 `signing*` tools will be absent unless you configure one. The core 22 tools always work.
+- **Custom port.** If you run the peer on a non-default port, set `CONVEX_LOCAL_URL=http://localhost:NNNN/mcp` before launching Claude Code.
+
 ## Security notes
 
 - **HTTPS is required for seed-based tools** (`transact`, `signAndSubmit`, `transfer`) since they transmit Ed25519 seeds. Do not point the plugin at a plain-`http://` peer for any signing work beyond local development.
